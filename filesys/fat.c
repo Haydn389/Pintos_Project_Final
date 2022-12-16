@@ -248,12 +248,9 @@ sector_to_cluster (disk_sector_t sect) {
 disk_sector_t
 get_sector(disk_sector_t start, off_t pos){
 	cluster_t start_clst = sector_to_cluster(start);
-	// printf("get_sector========disk_sector_t : %d\n",start);
-	// cluster_t start_clst = start;
 	
 	int i=0;
 	for (i=0; i<pos/DISK_SECTOR_SIZE;i++){
-		// printf("get_sector========start_clst : %d\n",start_clst);
 		start_clst=fat_get(start_clst);
 		if (start_clst == EOChain || start_clst == 0) {
 			return -1;

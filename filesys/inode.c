@@ -51,18 +51,14 @@ static disk_sector_t
 byte_to_sector (const struct inode *inode, off_t pos) {
 	ASSERT (inode != NULL);
 
-	// printf("==========byte_to_sector 진입 inode->data.length : %d \n",inode->data.length);
 	if (pos < inode->data.length){
 		#ifdef EFILESYS
-			// printf("==========byte_to_sector 진입 #ifdef EFILESYS\n");
 			return get_sector(inode->data.start,pos);
 		#else
-			// printf("==========byte_to_sector 진입 #else\n");
 			return inode->data.start + pos / DISK_SECTOR_SIZE;
 		#endif
 	}
 	else
-		// printf("==========byte_to_sector 진입 return -1\n");
 		return -1;
 }
 
@@ -246,7 +242,6 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset) {
 
 	while (size > 0) {
 		/* Disk sector to read, starting byte offset within sector. */
-		// printf("!!!!!=========byte_to_sector 진입전 inode->data.length : %d \n",inode->data.length);
 		disk_sector_t sector_idx = byte_to_sector (inode, offset);
 		int sector_ofs = offset % DISK_SECTOR_SIZE;
 
@@ -299,12 +294,6 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 	uint8_t *bounce = NULL;
 	uint8_t zero[512];
 	memset(zero, 0, DISK_SECTOR_SIZE);
-	// printf("**************inode : %d\n",inode);
-	// printf("**************buffer_ : %d\n",buffer_);
-	// printf("*************size : %d\n",size);
-	// printf("*************offset : %d\n",offset);
-	// printf("=====inode_write_at 함수 inode : %d\n",inode);
-	// printf("=====inode->deny_write_cnt : %d\n",inode->deny_write_cnt);
 	if (inode->deny_write_cnt){
 		return 0;
 	}
@@ -337,9 +326,6 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 			/* Sector to write, starting byte offset within sector. */
 			// offest = 512+462 = 974  | 50
 			disk_sector_t sector_idx = byte_to_sector (inode, offset);
-			// printf("++++++++++++++++inode : %d\n",inode);
-			// printf("++++++++++++++++offset : %d\n",offset);
-			// printf("++++++++++++++++sector_idx : %d\n",sector_idx);
 
 			int sector_ofs = offset % DISK_SECTOR_SIZE;	//462 | 50
 
