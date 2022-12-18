@@ -30,7 +30,7 @@ int open(const char *file);
 int filesize(int fd);
 int read(int fd, void *buffer, unsigned size);
 int write(int fd, const void *buffer, unsigned size);
-struct file *find_file(int fd);
+// struct file *find_file(int fd);
 int fork(const char *thread_name, struct intr_frame *if_);
 int wait(int pid);
 void close(int fd);

@@ -295,6 +295,7 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset) {
 off_t
 inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 		off_t offset) {
+	// printf("********************inode_write_at\n");
 	const uint8_t *buffer = buffer_;
 	off_t bytes_written = 0;
 	uint8_t *bounce = NULL;
@@ -317,8 +318,10 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 				disk_write(filesys_disk, cluster_to_sector(clst), zero);
 				// disk_write(filesys_disk, , zero);
 			}
+			inode->data.length=offset+size;
 		}
-		inode->data.length+=sectors*DISK_SECTOR_SIZE;
+		// printf("=========inode->data.length : %d\n",inode->data.length);
+
 		// disk_sector_t write_sect = byte_to_sector(inode,offset);
 		// cluster_t write_clst = sector_to_cluster(write_sect);
 		// while(write_clst != EOChain){
@@ -374,7 +377,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 		}
 
 	free (bounce);
-	// printf("=========bytes_written : %d\n",bytes_written);
+	disk_write (filesys_disk, inode->sector, &inode->data);
 	return bytes_written;
 }
 

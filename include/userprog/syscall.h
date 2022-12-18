@@ -3,4 +3,7 @@
 
 void syscall_init (void);
 
+
+struct file *find_file(int fd);
+
 #endif /* userprog/syscall.h */
